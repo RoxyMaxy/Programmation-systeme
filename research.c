@@ -25,7 +25,23 @@ int main()
 	else 
 	{
         	close(tube[0]);
-	        int found = 0;
+        	// Ouvrir le fichier et chercher le mot
+        	FILE *file = fopen("fichier.txt", "r");
+        	if (file != NULL) 
+			{
+	            char line[256];
+            	while (fgets(line, sizeof(line), file) != NULL) 
+				{
+	                if (strstr(line, mot) != NULL) 
+					{
+                    	found = 1;
+                    	break;
+                	}
+            	}
+            	fclose(file);
+        	}
+        
+	        write(tube[1], &found, sizeof(int));
 	        found = 1;
 	        write(tube[1], &found, sizeof(int));
 	        wait(NULL);
